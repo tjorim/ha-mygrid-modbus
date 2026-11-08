@@ -3,16 +3,41 @@
 import ast
 import json
 import tomllib
+from importlib.metadata import distribution
 from pathlib import Path
+
+from packaging.requirements import Requirement
+from packaging.utils import canonicalize_name
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPONENT = ROOT / "custom_components/mygrid_modbus"
 
 
+def validate_transport_pins(dev: list[str], upstream: list[str]) -> None:
+    """Require the test transport pins to match Home Assistant exactly."""
+    local = {canonicalize_name(req.name): req for req in map(Requirement, dev)}
+    core = {canonicalize_name(req.name): req for req in map(Requirement, upstream)}
+    for name in ("modbus-connection", "tmodbus", "pymodbus"):
+        if name not in core or name not in local:
+            msg = f"Missing shared transport requirement: {name}"
+            raise ValueError(msg)
+        if (
+            local[name].specifier != core[name].specifier
+            or local[name].extras != core[name].extras
+        ):
+            msg = f"Transport pin differs from installed Home Assistant: {local[name]} != {core[name]}"
+            raise ValueError(msg)
+
+
 def main() -> None:
     """Validate the package metadata, library pin and import boundaries."""
+    core_manifest = distribution("homeassistant").locate_file(
+        "homeassistant/components/modbus/manifest.json"
+    )
+    upstream = json.loads(core_manifest.read_text())["requirements"]
     manifest = json.loads((COMPONENT / "manifest.json").read_text())
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    validate_transport_pins(project["dependency-groups"]["dev"], upstream)
     assert list(manifest) == [
         "domain",
         "name",

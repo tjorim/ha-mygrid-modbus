@@ -4,9 +4,20 @@
     "github>tjorim/renovate-config",
     "github>tjorim/renovate-config:python-lib"
   ],
-  "ignoreDeps": [
-    "modbus-connection",
-    "tmodbus",
-    "pymodbus"
+  "packageRules": [
+    {
+      "description": [
+        "Home Assistant owns these exact shared transport versions. CI validates the dev pins against the installed HA Modbus manifest; update them together with the HA test baseline."
+      ],
+      "matchManagers": [
+        "pep621"
+      ],
+      "matchPackageNames": [
+        "modbus-connection",
+        "tmodbus",
+        "pymodbus"
+      ],
+      "enabled": false
+    }
   ]
 }
