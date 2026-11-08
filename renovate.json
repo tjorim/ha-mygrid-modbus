@@ -18,6 +18,23 @@
         "pymodbus"
       ],
       "enabled": false
+    },
+    {
+      "description": [
+        "Update the runtime manifest and development dependency together."
+      ],
+      "matchDatasources": [
+        "pypi"
+      ],
+      "matchPackageNames": [
+        "mygrid-modbus"
+      ],
+      "groupName": "mygrid-modbus"
     }
+  ],
+  "enabledManagers": [
+    "pep621",
+    "github-actions",
+    "homeassistant-manifest"
   ]
 }

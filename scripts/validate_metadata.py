@@ -29,6 +29,29 @@ def validate_transport_pins(dev: list[str], upstream: list[str]) -> None:
             raise ValueError(msg)
 
 
+def validate_library_pin(requirements: list[str], dev: list[str]) -> None:
+    """Require one exact library version shared by runtime and tests."""
+    if len(requirements) != 1:
+        msg = "Expected one runtime library requirement"
+        raise ValueError(msg)
+    requirement = Requirement(requirements[0])
+    pins = list(requirement.specifier)
+    if (
+        requirement.name != "mygrid-modbus"
+        or requirement.url is not None
+        or requirement.marker is not None
+        or requirement.extras
+        or len(pins) != 1
+        or pins[0].operator != "=="
+        or "*" in pins[0].version
+    ):
+        msg = "Expected an exact mygrid-modbus version"
+        raise ValueError(msg)
+    if requirements[0] not in dev:
+        msg = "Runtime library pin must match the development dependency"
+        raise ValueError(msg)
+
+
 def main() -> None:
     """Validate the package metadata, library pin and import boundaries."""
     core_manifest = distribution("homeassistant").locate_file(
@@ -45,8 +68,7 @@ def main() -> None:
     ]
     assert manifest["domain"] == "mygrid_modbus"
     assert manifest["version"] == project["project"]["version"] == "0.1.0"
-    assert manifest["requirements"] == ["mygrid-modbus==0.1.1"]
-    assert manifest["requirements"][0] in project["dependency-groups"]["dev"]
+    validate_library_pin(manifest["requirements"], project["dependency-groups"]["dev"])
     assert manifest["dependencies"] == ["modbus"]
     assert manifest["config_flow"]
     assert manifest["iot_class"] == "local_polling"
