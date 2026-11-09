@@ -1,6 +1,8 @@
 # ModuleTwo acceptance checklist
 
-Status: **not yet performed on physical hardware**. Automated simulator results do not change this status.
+Status: **partial physical acceptance: setup, polling and diagnostics verified on 2026-11-09; remaining checks pending**. Automated simulator results do not change this status. Record observations in the [hardware acceptance record](hardware-acceptance.md).
+
+The read-only library prerequisite passed on the replacement battery on 2026-11-09 (owner-reported Software 31.6, observed register map 2). This is not Home Assistant integration acceptance. Start with setup and telemetry; perform steps 4–5 only as an explicitly authorized, supervised power-control test. Step 10 requires separate explicit restart authorization. If a command outcome is uncertain, record it and inspect current readings before any manual retry; never retry automatically.
 
 Record integration version, Home Assistant version, battery firmware, map version, standalone/cluster configuration, time and results. Do not publish the battery's address or diagnostics without reviewing their contents.
 
