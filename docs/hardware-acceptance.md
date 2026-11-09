@@ -44,8 +44,8 @@ Keep network addresses, credentials and unreviewed diagnostics out of published 
 | 4–5 | Explicitly supervised allowed setpoints, readback, measured response and explicit zero | Owner authorized input/output testing in chat. +100 W and −100 W were accepted through HA, both within fresh 1200 W charge / 800 W discharge limits. Positive and negative measured responses observed; final explicit zero confirmed in setpoint and power, including fresh raw registers. See timing observations below. |
 | 6 | Connectivity loss, unavailable state, polling recovery and no command replay | Pending |
 | 7 | Reconfiguration preserves entity IDs/history and permits connection | Pending |
-| 8 | Energy dashboard selection and generated statistics | Both lifetime counters expose energy/Wh/total_increasing; recorder lists both IDs with has_sum=true. Actual statistic samples, dashboard selection and behavior remain pending. |
-| 9 | Polling changes, reload/unload do not write power; last-consumer connection release | Pending |
+| 8 | Energy dashboard selection and generated statistics | Both lifetime counters expose energy/Wh/total_increasing; recorder lists both IDs with has_sum=true. Subsequent read-only checks confirmed energy-class metadata in Wh and three five-minute samples for each counter. The existing Energy preferences contain no MyGrid battery source; dashboard selection/display remains pending. |
+| 9 | Polling changes, reload/unload do not write power; last-consumer connection release | Integration-only reload returned HTTP 200 with require_restart=false; setup recovered immediately. Before/after diagnostics showed setpoint 0 W, measured power 0 W, normal status and no faults. The shared connection remained listed as connected on unit 1 after reload. Polling-option changes and isolated last-consumer release remain untested. |
 | 10 | Optional supervised restart, single command and eventual read recovery | Not performed; requires separate authorization and maintenance window |
 | Diagnostics | Download works, decoded telemetry/raw dump agree, identifying fields omitted | HTTP 200; last_update_success=true, battery updated, no failed components/faults, all 18 holding registers returned and consistent with decoded values/scales. Integration payload omits network addresses and entry identity. HA diagnostic wrapper includes other integrations and setup-time entry IDs; do not publish the complete download without review. |
 
@@ -53,7 +53,7 @@ For any control test, record authorization, requested value, fresh limits, readb
 
 ## Discrepancies and completion
 
-Setup, repeated polling, diagnostics and small charge/discharge commands succeeded. Restart remains disabled and was not invoked. The existing Home Assistant instance retains the configured entry and continues polling; no local HA instance was started. Availability/recovery, reconfiguration, options/unload, detailed app comparison and dashboard acceptance remain pending. Optional restart may remain untested if explicitly recorded as such.
+Setup, repeated polling, diagnostics and small charge/discharge commands succeeded. Restart remains disabled and was not invoked. The existing Home Assistant instance retains the configured entry and continues polling; no local HA instance was started. Integration-only reload/reconnection also passed at idle, with unchanged zero setpoint/power and no faults. Recorder generated five-minute samples for both lifetime counters. Network-outage recovery, reconfiguration, polling-option changes, isolated last-consumer release, detailed app comparison and dashboard selection/display remain pending. Optional restart may remain untested if explicitly recorded as such.
 
 ### Authorized control test — 2026-11-09
 
@@ -70,3 +70,9 @@ The owner said the readings looked alright and explicitly authorized playing wit
 Readback and measured power did not settle immediately. These short tests establish accepted small commands, observed charge/discharge signs and eventual return to idle; they do not establish precise tracking accuracy, response-time guarantees or sustained operation. The five-second assertion failure is retained as an observation rather than counted as an immediate idle pass. No automatic write retry or restart was performed.
 
 After reviewing the physical test evidence, update the README and the [documentation hub](https://github.com/tjorim/custom-mygrid#readme) with the tested versions, scope and remaining limitations. Library reads, simulator tests, hassfest and HACS validation alone do not establish physical-device acceptance.
+
+## Low-impact follow-up
+
+After the owner requested further checks without stressing the battery, baseline diagnostics confirmed zero setpoint/power and no faults. Only the MyGrid config entry was reloaded; Home Assistant and the battery were not restarted. Post-reload diagnostics and the shared-connection list confirmed successful setup/reconnection with zero setpoint/power. No charge/discharge commands, network interruptions or further physical cycling were performed.
+
+Recorder metadata reports energy-class Wh statistics with sums for both lifetime counters, and three five-minute samples were returned for each since integration setup. Existing Energy preferences do not contain this MyGrid battery; they were left unchanged. Generating recorder samples is established; actual Energy dashboard display is not.
