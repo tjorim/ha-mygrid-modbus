@@ -67,15 +67,16 @@ def main() -> None:
         *sorted(set(manifest) - {"domain", "name"}),
     ]
     assert manifest["domain"] == "mygrid_modbus"
-    assert manifest["version"] == project["project"]["version"] == "0.1.0"
+    assert manifest["version"] == project["project"]["version"]
     validate_library_pin(manifest["requirements"], project["dependency-groups"]["dev"])
     assert manifest["dependencies"] == ["modbus"]
     assert manifest["config_flow"]
     assert manifest["iot_class"] == "local_polling"
     assert "quality_scale" not in manifest
-    assert json.loads((COMPONENT / "strings.json").read_text()) == json.loads(
-        (COMPONENT / "translations/en.json").read_text()
-    )
+    assert manifest["categories"] == ["energy.solar_batteries"]
+    assert not (COMPONENT / "strings.json").exists()
+    translations = json.loads((COMPONENT / "translations/en.json").read_text())
+    assert {"config", "entity"} <= translations.keys()
     for path in COMPONENT.glob("*.py"):
         for node in ast.walk(ast.parse(path.read_text())):
             if isinstance(node, ast.ImportFrom):

@@ -1,11 +1,21 @@
 # Community-testing releases
 
-The integration depends on the `mygrid-modbus` library published on PyPI; the pinned version is in `manifest.json`. Publication of this repository on GitHub is needed for HACS custom-repository downloads; the manual-install ZIP can be used locally.
+The integration is published at https://github.com/tjorim/ha-mygrid-modbus and can be installed through a HACS custom repository. Catalog listing is a separate submission. There is no official Home Assistant quality rating.
 
-1. Make sure the library version you need is on PyPI, bump the pin in `manifest.json` and the `dev` group of `pyproject.toml` (then `uv lock`), and run the local validation commands from README.
-2. Record the hardware checklist results; do not mark a release physically verified until those results exist. Confirm ongoing ownership and obtain manufacturer-approved brand artwork. Remove the explicit HACS `brands` exemption once artwork is included.
-3. Run `scripts/build_release.py`. The ZIP includes the integration directory and the license; it excludes caches. Test it in a clean Home Assistant configuration using the minimum supported version.
-4. Publish this repository under the actual GitHub owner, confirm documentation/issue URLs and repository topics, tag the version, and create release notes. The CI validates the standalone checkout and builds the ZIP; no release is published by local commands.
-5. Test HACS custom-repository installation. Default HACS listing is a separate submission, not implied by custom-repository compatibility.
+## Prepare a release
 
-A core submission would be a separate effort ported from this repository once the ModuleTwo is validated on hardware. Never run two implementations of the same domain in one Home Assistant instance.
+1. Publish any device-library changes to PyPI first. Keep the exact library pin in `manifest.json` and the `dev` dependency group in `pyproject.toml` aligned, then update `uv.lock`.
+2. Set the same integration version in `manifest.json` and `pyproject.toml`. Update versioned installation examples in README.
+3. Run every development check listed in README. CI runs those checks plus hassfest and HACS validation.
+4. Build the manual-install ZIP with `uv run python scripts/build_release.py`. Test installation and setup in a clean configuration on the minimum supported Home Assistant version. Test HACS custom-repository installation, updates and removal separately.
+5. Record physical test results and remaining limitations in the release notes. Automated tests do not establish physical acceptance. Keep reboot and power commands explicit during testing.
+6. Create a GitHub release with a tag exactly matching the manifest version, such as `0.1.0`, and attach `dist/mygrid-modbus-0.1.0.zip`. The release workflow checks the tag and rebuilds the ZIP before attaching it. Local build commands never publish a release.
+
+## Before catalog submission
+
+- Keep the community icon in `custom_components/mygrid_modbus/brand/` consistent with the [brand requirements](https://contributors.home-assistant.io/core/integrations/brands/). It originates from `custom-mygrid/assets/icon.svg` (Apache-2.0) and is not a manufacturer logo. HACS validates brands without an exemption.
+- Confirm ongoing maintainership by the listed code owner.
+- Confirm both HACS and hassfest pass without exemptions required by the catalog.
+- Follow the [catalog submission guide](https://contributors.home-assistant.io/marketplace/guides/catalog/); custom-repository installation alone does not add the integration to the catalog.
+
+A future core submission is a separate effort. Never install two implementations of the same domain in one Home Assistant instance.
