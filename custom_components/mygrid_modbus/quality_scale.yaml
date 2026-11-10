@@ -8,8 +8,8 @@ rules:
     status: done
     comment: One map read every five seconds; configurable 2–300 seconds. tests/test_integration.py.
   brands:
-    status: todo
-    comment: Add approved manufacturer artwork and submit to HA brands when publishing; no artwork rights were supplied.
+    status: done
+    comment: Local brand/icon.png and icon@2x.png use the community-project artwork from custom-mygrid (Apache-2.0), not manufacturer or Home Assistant branding.
   common-modules:
     status: done
     comment: Device/Component library owns register metadata and timing; common integration modules own HA lifecycle.
@@ -33,7 +33,7 @@ rules:
     comment: Developer README and draft user documentation introduction and protocol scope.
   docs-installation-instructions:
     status: done
-    comment: Developer README and draft user documentation provides immediately usable manual installation and post-publication HACS instructions.
+    comment: Developer README and draft user documentation provides immediately usable manual installation and HACS custom-repository instructions.
   docs-removal-instructions:
     status: done
     comment: Developer README and draft user documentation explains entry removal, uninstalling and retained battery setpoints.
@@ -138,7 +138,7 @@ rules:
     comment: Per-fault indicators, raw flags, map version and restart are opt-in.
   entity-translations:
     status: done
-    comment: All names and enum states have English translation keys and a matching strings.json.
+    comment: All names and enum states have English translation keys in translations/en.json.
   exception-translations:
     status: done
     comment: Communication, map and command errors have translated exception messages.

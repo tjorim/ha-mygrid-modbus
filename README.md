@@ -25,6 +25,8 @@ The protocol has no TLS or authentication. Keep it on your trusted LAN; do not f
 
 ## Installation
 
+[![Open your Home Assistant instance and open this repository in HACS or the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tjorim&repository=ha-mygrid-modbus&category=integration)
+
 ### Manual installation
 
 The complete package is ready for manual testing now. Build or use `dist/mygrid-modbus-0.1.0.zip`, extract it into the Home Assistant configuration directory, and restart. Home Assistant installs the `mygrid-modbus` library from PyPI on first start, so the host needs network access.
@@ -40,9 +42,13 @@ Open **Settings → Devices & services → Add integration → MyGrid ModuleTwo*
 
 Unit ID is fixed to the documented value **1**. Setup reads the device and verifies its register map before creating the entry. No commands are sent during setup.
 
-### HACS (after publishing this repository)
+### HACS
 
-After this integration repository is published on GitHub, in HACS open **Custom repositories**, paste this repository's GitHub URL, choose **Integration**, then download **MyGrid ModuleTwo** and restart Home Assistant. Add MyGrid through Devices & services as above. No repository has been published by this local implementation; see [release instructions](docs/releasing.md).
+In HACS open **Custom repositories**, add `https://github.com/tjorim/ha-mygrid-modbus`, choose **Integration**, then download **MyGrid ModuleTwo** and restart Home Assistant. Add MyGrid through Devices & services as above. Catalog listing is separate from custom-repository installation; see [release instructions](docs/releasing.md).
+
+After installation, start setup directly:
+
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=mygrid_modbus)
 
 ## Entities
 
@@ -172,7 +178,7 @@ uv run python scripts/validate_metadata.py
 uv run python scripts/build_release.py
 ```
 
-CI runs ruff, mypy and the tests, validates the manifest against `pyproject.toml`, builds the manual-install ZIP, and runs HACS and hassfest validation. Manufacturer-approved brand art is still pending; HACS's brand check is explicitly exempted until it is supplied. No official quality rating is claimed.
+CI runs ruff, mypy and the tests, validates the manifest against `pyproject.toml`, builds the manual-install ZIP, and runs HACS and hassfest validation. The integration ships the community project's green lightning icon; HACS checks branding without exemptions. No official quality rating is claimed.
 
 Change integration code and tests here. Change device or protocol behavior in the sibling `python-mygrid-modbus` repository, publish a release to PyPI, then bump the `mygrid-modbus==` pin in `custom_components/mygrid_modbus/manifest.json` and in the `dev` dependency group of `pyproject.toml` (run `uv lock`). `scripts/validate_metadata.py` fails if the two pins differ. This integration and the core overlay use different domains, so entries do not migrate between them.
 
