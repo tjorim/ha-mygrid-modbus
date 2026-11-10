@@ -85,7 +85,9 @@ Restart sends `1` to register 9 once, makes cached telemetry unavailable, and re
 
 ## Energy dashboard
 
-Under **Settings → Dashboards → Energy**, add battery storage with **Lifetime charged energy** for energy into the battery and **Lifetime discharged energy** for energy out. Select the separate Charging power and Discharging power entities where the dashboard offers power inputs. Stored energy and Total capacity are snapshots and must not be used as cumulative energy flow.
+Under **Settings → Dashboards → Energy**, add battery storage with **Lifetime charged energy** for energy into the battery and **Lifetime discharged energy** for energy out. Stored energy and Total capacity are snapshots and must not be used as cumulative energy flow.
+
+For live power, choose **Use an inverted entity** and select **Battery power**. Home Assistant's dashboard expects positive values while discharging, but Battery power is positive while charging, so the standard option would show charging as discharging. Do not pick **Use two entities** with Charging power and Discharging power unless you want that: Home Assistant then creates an extra helper sensor named "Battery Power" (entity ID ending in `_net_power`) next to the integration's own **Battery power** sensor, which looks like a duplicate. The inverted option also creates a helper, but it is named "Battery power Inverted".
 
 The manual explicitly documents cluster-wide SOC, limits and setpoints. It does not establish the aggregation scope of every energy register. Confirm those totals on your cluster before relying on whole-house statistics. The protocol exposes no follower list or serial numbers; one configured leader produces one device, not invented follower devices.
 
