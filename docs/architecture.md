@@ -8,4 +8,4 @@ The integration imports the library from PyPI (`mygrid-modbus`, pinned in `manif
 
 To change device behavior, change the library, release it, and bump the pin here. `scripts/validate_metadata.py` checks that the manifest and the development dependency agree.
 
-The config-entry schema remains version 1. Identity remains entry-based because the device exposes no serial number. This transport/model refactor does not change entity keys or power sign/units. Physical acceptance remains pending; automated TCP tests use a simulator.
+The config-entry schema remains version 1. Identity remains entry-based because the device exposes no serial number. This transport/model refactor does not change entity keys or power sign/units. Physical acceptance is partial; see the [acceptance record](hardware-acceptance.md). Automated TCP tests use a simulator.

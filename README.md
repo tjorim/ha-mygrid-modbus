@@ -2,8 +2,19 @@
 
 ## Documentation
 
-See the [MyGrid documentation hub](https://github.com/tjorim/custom-mygrid#readme)
-for device setup guides, protocol references and repository links.
+Read the [complete ModuleTwo setup guide](https://tjorim.github.io/custom-mygrid/docs/moduletwo/)
+on the MyGrid documentation website, alongside the other device guides.
+
+This README is the authoritative source for this integration's installation,
+configuration, entities, Energy dashboard setup, automation examples and
+troubleshooting. Edit those instructions here; the website publishes a reviewed,
+commit-pinned snapshot, so it may lag this branch. Integration acceptance and
+release instructions belong in this repository's `docs/` directory.
+
+Python usage, device prerequisites and protocol details belong in
+[`python-mygrid-modbus`](https://github.com/tjorim/python-mygrid-modbus). Link to that
+source rather than copying its reference tables. Contributor guidance lives in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 Local monitoring and explicit power control for **MyGrid ModuleTwo** batteries over Modbus TCP. No cloud service or account is used by the integration.
 
